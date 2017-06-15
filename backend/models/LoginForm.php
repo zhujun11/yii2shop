@@ -7,22 +7,21 @@
  */
 namespace backend\models;
 use yii\base\Model;
-use yii\web\Cookie;
 
 class LoginForm extends Model{
     public $username;
     public $password;
     public $code;
     public $autoLogin;
-    public $id;
+//    public $id;
 //    static public $checkautoLogin=[0=>'否',1=>'是'];
     public function rules(){
         return [
             [['username','password'],'required'],
             ['password','valitepwd'],
             ['autoLogin','integer'],
-            ['id','integer'],
-            ['code','captcha','captchaAction'=>'login/captcha']
+//            ['id','integer'],
+            ['code','captcha','captchaAction'=>'user/captcha']
         ];
     }
     public function attributeLabels(){
@@ -41,22 +40,11 @@ class LoginForm extends Model{
                  $user->last_time=time();
                  $user->last_ip=\Yii::$app->request->userIP;
                  $user->save();
-                 \Yii::$app->user->login($user);
-                 if($this->autoLogin==1){
-                     $cookies=\Yii::$app->response->cookies;
-                     $cookie=new Cookie([
-                         'name'=>'id',
-                         'value'=>$user->id,
-                         'expire'=>time()+3600*24*7,
-                     ]);
-                     $cookies->add($cookie);
-                     $cookie=new Cookie([
-                         'name'=>'pwd',
-                         'value'=>$this->password,
-                         'expire'=>time()+3600*24*7,
-                     ]);
-                     $cookies->add($cookie);
-                 }
+                 //判断是否启用自动登录---并且使用一个变量保存login的第二个参数,过期时间
+                 $duration=$this->autoLogin ? 24*3600 : 0;
+
+                 \Yii::$app->user->login($user,$duration);
+
                  \Yii::$app->session->setFlash('success','登录成功');
                  return \Yii::$app->user->getIdentity();
              }else{

@@ -2,7 +2,6 @@
     <tr>
         <th>ID</th>
         <th>商品分类名称</th>
-        <th>上级分类名称</th>
         <th>简介</th>
         <th>操作</th>
     </tr>
@@ -12,7 +11,6 @@
             <td><?=str_repeat(' - - ',$goodscate->depth).$goodscate->name
                 ?>
             </td>
-            <td><?=$goodscate->parent_id?></td>
             <td><?=$goodscate->intro?></td>
             <td>
                 <?=\yii\bootstrap\Html::a('删除',['goodscategory/del','id'=>$goodscate->id])?>

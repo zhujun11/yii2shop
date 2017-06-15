@@ -23,10 +23,13 @@ use yii\web\IdentityInterface;
 class User extends \yii\db\ActiveRecord implements IdentityInterface
 {
     public $topassword;
-    static public $allStatus=[0=>'封号',1=>'正常'];
+    public $password;
+    static public $allStatus=[0=>'禁用',1=>'正常'];
     /**
      * @inheritdoc
      */
+    const SCENARIO_ADD='add';//定义场景
+
     public static function tableName()
     {
         return 'user';
@@ -38,15 +41,18 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['username', 'password_hash', 'email',], 'required'],
+            ['password','required','on'=>self::SCENARIO_ADD],//使用场景
+            [['username', 'email',], 'required'],
             [['status', 'created_at', 'updated_at', 'last_time'], 'integer'],
             [['username', 'password_hash', 'password_reset_token', 'email'], 'string', 'max' => 255],
             [['auth_key'], 'string', 'max' => 32],
+            ['password', 'string','length'=>[6,32],'tooShort'=>'密码不少于6位','tooLong'=>'密码是超过32位'],
             [['last_ip'], 'string', 'max' => 30],
             [['email'], 'email'],
-            [['email','username'], 'unique','message'=>'用户名已被占用'],
+            [['email'],'unique','message'=>'邮箱已被占用'],
+            [['username'], 'unique','message'=>'用户名已被占用'],
             [['password_reset_token'], 'unique'],
-            ['topassword','valitopassword']
+            ['topassword','valitopassword','skipOnEmpty'=>false]
         ];
     }
 
@@ -59,7 +65,8 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             'id' => 'ID',
             'username' => '用户名',
             'auth_key' => 'Auth Key',
-            'password_hash' => '密码',
+            'password_hash' => 'password_hash',
+            'password' => '密码',
             'topassword'=>'确认密码',
             'password_reset_token' => 'Password Reset Token',
             'email' => '邮箱',
@@ -71,11 +78,23 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         ];
     }
     public function valitopassword(){
-        if($this->password_hash!=$this->topassword){
+        if($this->password!=$this->topassword){
             $this->addError('topassword','两次密码不一致');
         }
     }
+    public function beforeSave($insert){
+        if ($insert){//是插入数据(添加)的情况才有创建时间
+            $this->created_at=time();
+            $this->status=1;
+            //设置自动登录的token
+            $this->auth_key=Yii::$app->security->generateRandomString();
+        }
+        if($this->password){//有明文密码才加密
 
+        $this->password_hash=\Yii::$app->security->generatePasswordHash($this->password);
+        }
+        return parent::beforeSave($insert);
+    }
     /**
      * Finds an identity by the given ID.
      * @param string|int $id the ID to be looked for
@@ -125,7 +144,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public function getAuthKey()
     {
-        // TODO: Implement getAuthKey() method.
+        return $this->auth_key;
     }
 
     /**
@@ -138,6 +157,6 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public function validateAuthKey($authKey)
     {
-        // TODO: Implement validateAuthKey() method.
+        return $this->getAuthKey()==$authKey;
     }
 }

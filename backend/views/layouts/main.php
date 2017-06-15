@@ -40,7 +40,7 @@ AppAsset::register($this);
     ];
     if (Yii::$app->user->isGuest) {
 //        var_dump(\Yii::$app->user->isGuest);
-        $menuItems[] = ['label' => '管理员登录', 'url' => ['/login/login']];
+        $menuItems[] = ['label' => '管理员登录', 'url' => ['/user/login']];
     } else {
         $menuItems=[
             ['label' => '文章', 'url' => ['/article/index']],
@@ -51,7 +51,7 @@ AppAsset::register($this);
             ['label' => '管理员', 'url' => ['/user/index']],
         ];
         $menuItems[] = '<li>'
-            . Html::beginForm(['/login/logout'], 'post')
+            . Html::beginForm(['/user/logout'], 'post')
             . Html::submitButton(
                 '( 已登录管理员: ' . Yii::$app->user->identity->username . ' ) 退出 ',
                 ['class' => 'btn btn-link logout']

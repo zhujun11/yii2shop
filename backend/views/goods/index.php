@@ -46,18 +46,18 @@ echo \yii\bootstrap\Html::submitButton('搜索',['class'=>'btn btn-info form-con
         <td><?=\yii\bootstrap\Html::img($goods->logo,['width'=>60])?></td>
         <td><?=$goods->name?></td>
         <td><?=$goods->sn?></td>
-        <td><?=$goods->goodsCategory->name?></td>
-        <td><?=$goods->brand->name?></td>
         <td><?=$goods->market_price?></td>
         <td><?=$goods->shop_price?></td>
+        <td><?=$goods->goodsCategory->name?></td>
+        <td><?=$goods->brand->name?></td>
         <td><?=$goods->stock?></td>
         <td><?=\backend\models\Goods::$allSale[$goods->is_on_sale];?></td>
         <td><?=\backend\models\Goods::$allStatus[$goods->status]?></td>
         <td>
             <?=\yii\bootstrap\Html::a('修改',['goods/edit','id'=>$goods->id],['class'=>'btn btn-warning btn-xs'])?>
-            <?=\yii\bootstrap\Html::a('删除',['goods/del','id'=>$goods->id])?><br/>
-            <?=\yii\bootstrap\Html::a('查看商品详情',['goods/content','id'=>$goods->id])?>
-            <?=\yii\bootstrap\Html::a('查看相册',['goodsimg/index','id'=>$goods->id])?>
+            <?=\yii\bootstrap\Html::a('删除',['goods/del','id'=>$goods->id],['class'=>'btn btn-danger btn-xs'])?><br/>
+            <?=\yii\bootstrap\Html::a('详情',['goods/content','id'=>$goods->id],['class'=>'btn btn-info btn-xs'])?>
+            <?=\yii\bootstrap\Html::a('相册',['goodsimg/index','id'=>$goods->id],['class'=>'btn btn-info btn-xs'])?>
         </td>
     </tr>
     <?php endforeach;?>
