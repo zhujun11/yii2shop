@@ -11,11 +11,11 @@
             <td><?=$img->id?></td>
             <td><?=\yii\bootstrap\Html::img($img->url,['width'=>200])?></td>
             <td>
-                <?=\yii\bootstrap\Html::a('删除',['goodsimg/del','id'=>$img->id])?>
-                <?=\yii\bootstrap\Html::a('修改',['goodsimg/edit','id'=>$img->id])?>
+                <?php if(Yii::$app->user->can('user/edit')){echo \yii\bootstrap\Html::a('删除',['goodsimg/del','id'=>$img->id]);}?>
+                <?php if(Yii::$app->user->can('user/edit')){echo \yii\bootstrap\Html::a('修改',['goodsimg/edit','id'=>$img->id]);}?>
             </td>
         </tr>
     <?php endforeach;?>
 </table>
-<?=\yii\bootstrap\Html::a('添加图片',['goodsimg/add','goodsid'=>$goods_id])?>&emsp;
+<?php if(Yii::$app->user->can('user/edit')){echo \yii\bootstrap\Html::a('添加图片',['goodsimg/add','goodsid'=>$goods_id]);}?>&emsp;
 <?=\yii\bootstrap\Html::a('返回商品列表',['goods/index'])?>

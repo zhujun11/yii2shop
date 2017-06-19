@@ -17,13 +17,13 @@
             <td><?=$brand->sort?></td>
             <td><?=\backend\models\Brand::$allStatus[$brand->status];?></td>
             <td>
-                <?=\yii\bootstrap\Html::a('修改',['brand/edit','id'=>$brand->id])?>
-                <?=\yii\bootstrap\Html::a('删除',['brand/del','id'=>$brand->id])?>
+                <?php if(Yii::$app->user->can('user/edit')){echo \yii\bootstrap\Html::a('修改',['brand/edit','id'=>$brand->id]);}?>
+                <?php if(Yii::$app->user->can('user/edit')){echo \yii\bootstrap\Html::a('删除',['brand/del','id'=>$brand->id]);}?>
             </td>
         </tr>
     <?php endforeach;?>
     <tr>
-        <td colspan="7">
+        <td colspan="7" style="text-align: center">
             <?php echo \yii\widgets\LinkPager::widget(
                     [
                         'pagination'=>$page,
@@ -34,4 +34,4 @@
         </td>
     </tr>
 </table>
-<?=\yii\bootstrap\Html::a('添加品牌',['brand/add'])?>
+<?php if(Yii::$app->user->can('user/edit')){echo \yii\bootstrap\Html::a('添加品牌',['brand/add']);}?>

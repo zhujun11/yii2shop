@@ -3,6 +3,7 @@
 namespace backend\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\web\IdentityInterface;
 
 /**
@@ -24,6 +25,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
 {
     public $topassword;
     public $password;
+    public $roles=[];
     static public $allStatus=[0=>'禁用',1=>'正常'];
     /**
      * @inheritdoc
@@ -52,7 +54,8 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             [['email'],'unique','message'=>'邮箱已被占用'],
             [['username'], 'unique','message'=>'用户名已被占用'],
             [['password_reset_token'], 'unique'],
-            ['topassword','valitopassword','skipOnEmpty'=>false]
+            ['topassword','valitopassword','skipOnEmpty'=>false],
+            ['roles','safe']
         ];
     }
 
@@ -75,13 +78,22 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             'updated_at' => 'Updated At',
             'last_time' => 'Last Time',
             'last_ip' => 'Last Ip',
+            'roles'=>'角色选择'
         ];
     }
+    //对修改时的表单加载旧数据
+    public function loadData($roles){
+        foreach ($roles as $role){
+            $this->roles[]=$role->name;
+        }
+    }
+    //两次输入密码不一致的验证
     public function valitopassword(){
         if($this->password!=$this->topassword){
             $this->addError('topassword','两次密码不一致');
         }
     }
+    //在保存数据之前要实现的功能
     public function beforeSave($insert){
         if ($insert){//是插入数据(添加)的情况才有创建时间
             $this->created_at=time();
@@ -94,6 +106,11 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         $this->password_hash=\Yii::$app->security->generatePasswordHash($this->password);
         }
         return parent::beforeSave($insert);
+    }
+    //获取所有角色的静态方法
+    public static function getRoleOptions(){
+        $roles=Yii::$app->authManager->getRoles();
+        return ArrayHelper::map($roles,'name','description');
     }
     /**
      * Finds an identity by the given ID.

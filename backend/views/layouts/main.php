@@ -27,43 +27,7 @@ AppAsset::register($this);
 
 <div class="wrap">
     <?php
-    NavBar::begin([
-        'brandLabel' => 'yii2惊喜商城',
-        'brandUrl' => Yii::$app->homeUrl,
-        'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
-        ],
-    ]);
-    $menuItems = [
-        ['label' => '后台首页', 'url' => ['/backend/index']],
-
-    ];
-    if (Yii::$app->user->isGuest) {
-//        var_dump(\Yii::$app->user->isGuest);
-        $menuItems[] = ['label' => '管理员登录', 'url' => ['/user/login']];
-    } else {
-        $menuItems=[
-            ['label' => '文章', 'url' => ['/article/index']],
-            ['label' => '文章分类', 'url' => ['/article_category/index']],
-            ['label' => '商品', 'url' => ['/goods/index']],
-            ['label' => '商品分类', 'url' => ['/goodscategory/index']],
-            ['label' => '品牌', 'url' => ['/brand/index']],
-            ['label' => '管理员', 'url' => ['/user/index']],
-        ];
-        $menuItems[] = '<li>'
-            . Html::beginForm(['/user/logout'], 'post')
-            . Html::submitButton(
-                '( 已登录管理员: ' . Yii::$app->user->identity->username . ' ) 退出 ',
-                ['class' => 'btn btn-link logout']
-            )
-            . Html::endForm()
-            . '</li>';
-    }
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => $menuItems,
-    ]);
-    NavBar::end();
+    echo \backend\widgets\MenuWidget::widget();
     ?>
 
     <div class="container">

@@ -19,11 +19,11 @@
             <td><?=\backend\models\Article::$allStatus[$article->status];?></td>
             <td><?=date("Y-d-m H:i:s",$article->create_time);?></td>
             <td>
-                <?=\yii\bootstrap\Html::a('修改',['article/edit','id'=>$article->id])?>
-                <?=\yii\bootstrap\Html::a('删除',['article/del','id'=>$article->id])?>
+                <?php if(Yii::$app->user->can('user/edit')){echo \yii\bootstrap\Html::a('修改',['article/edit','id'=>$article->id]);}?>
+                <?php if(Yii::$app->user->can('user/edit')){echo \yii\bootstrap\Html::a('删除',['article/del','id'=>$article->id]);}?>
                 <?=\yii\bootstrap\Html::a('查看详细',['article/sdetail','id'=>$article->id])?>
             </td>
         </tr>
     <?php endforeach;?>
 </table>
-<?=\yii\bootstrap\Html::a('发表文章',['article/add'])?>
+<?php if(Yii::$app->user->can('user/edit')){echo \yii\bootstrap\Html::a('发表文章',['article/add']);}?>

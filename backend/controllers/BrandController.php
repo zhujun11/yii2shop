@@ -9,7 +9,7 @@ use yii\web\UploadedFile;
 use xj\uploadify\UploadAction;
 use crazyfd\qiniu\Qiniu;
 
-class BrandController extends \yii\web\Controller
+class BrandController extends BackedContoller
 {
     //显示品牌列表
     public function actionIndex()
@@ -147,6 +147,8 @@ class BrandController extends \yii\web\Controller
 
                     $qiniu = new Qiniu($ak, $sk,$domain, $bucket);
                     $filename=\Yii::getAlias('@webroot').$imgPath;
+//                    $filename=$action->getSavePath();
+
                     $qiniu->uploadFile($filename,$imgPath);
                     $url = $qiniu->getLink($imgPath);
                     $action->output['fileUrl'] = $url;

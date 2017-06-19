@@ -19,7 +19,7 @@ use yii\web\Controller;
 use xj\uploadify\UploadAction;
 use yii\web\Request;
 
-class GoodsController extends Controller{
+class GoodsController extends BackedContoller{
     //显示列表
     public function actionIndex(){
         $serchForm=new SerchForm();

@@ -34,11 +34,10 @@
             <td><?=date("Y-m-d H:i:s",$user->last_time)?></td>
             <td><?=$user->last_ip?></td>
             <td>
-                <?=\yii\bootstrap\Html::a('修改',['user/edit','id'=>$user->id],['class'=>'btn btn-warning btn-xs'])?>
-                <?=$user->status ? \yii\bootstrap\Html::a('禁用',['user/disable','id'=>$user->id],['class'=>'btn btn-danger btn-xs']):\yii\bootstrap\Html::a('启用',['user/enable','id'=>$user->id],['class'=>'btn btn-danger btn-xs'])?>
-                <?=\yii\bootstrap\Html::a('彻底删除',['user/del','id'=>$user->id],['class'=>'btn btn-danger btn-xs'])?>
+                <?php if(Yii::$app->user->can('user/edit')){echo \yii\bootstrap\Html::a('修改',['user/edit','id'=>$user->id],['class'=>'btn btn-warning btn-xs']);}?>
+                <?php if(Yii::$app->user->can('user/edit')){echo \yii\bootstrap\Html::a('彻底删除',['user/del','id'=>$user->id],['class'=>'btn btn-danger btn-xs']);}?>
             </td>
         </tr>
     <?php endforeach;?>
 </table>
-<?=\yii\bootstrap\Html::a('添加管理员',['user/add'])?>
+<?php if(Yii::$app->user->can('user/edit')){echo \yii\bootstrap\Html::a('添加管理员',['user/add']);}?>

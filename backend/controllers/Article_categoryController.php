@@ -6,7 +6,7 @@ use backend\models\ArticleCategory;
 use yii\data\Pagination;
 use yii\web\Request;
 
-class Article_categoryController extends \yii\web\Controller
+class Article_categoryController extends BackedContoller
 {
     public function actionIndex()
     {
@@ -43,7 +43,7 @@ class Article_categoryController extends \yii\web\Controller
             $model->load($request->post());
             if($model->validate()){
                 $model->save();
-                \Yii::$app->session->setFlash('success','添加成功');
+                \Yii::$app->session->setFlash('success','修改成功');
                 return $this->redirect(['article_category/index']);
             }else{
                 var_dump($model->getErrors());

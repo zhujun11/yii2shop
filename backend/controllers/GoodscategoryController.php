@@ -8,7 +8,7 @@ use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 use yii\web\Request;
 
-class GoodscategoryController extends \yii\web\Controller
+class GoodscategoryController extends BackedContoller
 {
     //商品分类列表
     public function actionIndex()

@@ -54,15 +54,15 @@ echo \yii\bootstrap\Html::submitButton('搜索',['class'=>'btn btn-info form-con
         <td><?=\backend\models\Goods::$allSale[$goods->is_on_sale];?></td>
         <td><?=\backend\models\Goods::$allStatus[$goods->status]?></td>
         <td>
-            <?=\yii\bootstrap\Html::a('修改',['goods/edit','id'=>$goods->id],['class'=>'btn btn-warning btn-xs'])?>
-            <?=\yii\bootstrap\Html::a('删除',['goods/del','id'=>$goods->id],['class'=>'btn btn-danger btn-xs'])?><br/>
+            <?php if(Yii::$app->user->can('user/edit')){echo \yii\bootstrap\Html::a('修改',['goods/edit','id'=>$goods->id],['class'=>'btn btn-warning btn-xs']);}?>
+            <?php if(Yii::$app->user->can('user/edit')){echo \yii\bootstrap\Html::a('删除',['goods/del','id'=>$goods->id],['class'=>'btn btn-danger btn-xs']);}?><br/>
             <?=\yii\bootstrap\Html::a('详情',['goods/content','id'=>$goods->id],['class'=>'btn btn-info btn-xs'])?>
             <?=\yii\bootstrap\Html::a('相册',['goodsimg/index','id'=>$goods->id],['class'=>'btn btn-info btn-xs'])?>
         </td>
     </tr>
     <?php endforeach;?>
 </table>
-<?=\yii\bootstrap\Html::a('添加商品',['goods/add'])?>
+<?php if(Yii::$app->user->can('user/edit')){echo \yii\bootstrap\Html::a('添加商品',['goods/add']);}?>
 <?php
 /*
 use yii\web\JsExpression;

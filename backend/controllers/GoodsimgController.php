@@ -16,6 +16,7 @@ class GoodsimgController extends Controller{
         $imgs=GoodsImg::find()->where(['goods_id'=>$id])->all();
         return $this->render('index',['imgs'=>$imgs,'goods_id'=>$id]);
     }
+
     public function actionAdd($goodsid){
         $model=new GoodsImg();
         $request=new Request();

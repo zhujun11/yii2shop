@@ -17,10 +17,10 @@
             <td><?=\backend\models\ArticleCategory::$allstatus[$cate->status];?></td>
             <td><?=\backend\models\ArticleCategory::$allcats[$cate->is_help];?></td>
             <td>
-                <?=\yii\bootstrap\Html::a('修改',['article_category/edit','id'=>$cate->id])?>
-                <?=\yii\bootstrap\Html::a('删除',['article_category/del','id'=>$cate->id])?>
+                <?php if(Yii::$app->user->can('user/edit')){echo \yii\bootstrap\Html::a('修改',['article_category/edit','id'=>$cate->id]);}?>
+                <?php if(Yii::$app->user->can('user/edit')){echo \yii\bootstrap\Html::a('删除',['article_category/del','id'=>$cate->id]);}?>
             </td>
         </tr>
     <?php endforeach;?>
 </table>
-<?=\yii\bootstrap\Html::a('添加文章分类',['article_category/add'])?>
+<?php if(Yii::$app->user->can('user/edit')){echo \yii\bootstrap\Html::a('添加文章分类',['article_category/add']);}?>
