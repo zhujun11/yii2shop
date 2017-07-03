@@ -6,12 +6,22 @@
  * Time: 17:04
  */
 namespace backend\controllers;
+use backend\filters\AccessFilter;
 use backend\models\GoodsImg;
 use yii\web\Controller;
 use xj\uploadify\UploadAction;
 use yii\web\Request;
 
 class GoodsimgController extends Controller{
+    public function behaviors(){
+        return [
+            'accessFilter'=>[
+                'class'=>AccessFilter::className(),
+                'only'=>['index','add','edit','del']
+            ]
+        ];
+    }
+
     public function actionIndex($id){
         $imgs=GoodsImg::find()->where(['goods_id'=>$id])->all();
         return $this->render('index',['imgs'=>$imgs,'goods_id'=>$id]);
@@ -24,7 +34,9 @@ class GoodsimgController extends Controller{
             $model->load($request->post());
             $data=$request->post();
             $urls=$data['url'];
+
             foreach ($urls as $url){
+
                 $model->url=$url;
                 $model->goods_id=$goodsid;
                 $model->save();

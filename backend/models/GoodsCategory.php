@@ -26,7 +26,18 @@ class GoodsCategory extends \yii\db\ActiveRecord
     {
         return 'goods_category';
     }
+    public function getParent(){
+        return $this->hasOne(self::className(),['id'=>'parent_id']);
+    }
+    public function getChildren(){
+        return $this->hasMany(self::className(),['parent_id'=>'id']);
+    }
 
+    //查找商品分类
+    public static function getCategory($depth=0,$parent_id=0){
+        $goodsCategories=GoodsCategory::find()->where(['depth'=>$depth,'parent_id'=>$parent_id])->all();
+        return $goodsCategories;
+    }
     /**
      * @inheritdoc
      */
@@ -34,7 +45,7 @@ class GoodsCategory extends \yii\db\ActiveRecord
     {
         return [
             [[ 'parent_id','name'], 'required'],
-            ['name','unique','message'=>'名称不能重复'],
+//            ['name','unique','message'=>'名称不能重复'],
             [['tree', 'lft', 'rgt', 'depth', 'parent_id'], 'integer'],
             [['intro'], 'string'],
             [['name'], 'string', 'max' => 50],

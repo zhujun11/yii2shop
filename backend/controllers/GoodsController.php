@@ -6,6 +6,7 @@
  * Time: 11:28
  */
 namespace backend\controllers;
+use backend\filters\AccessFilter;
 use backend\models\Brand;
 use backend\models\Goods;
 use backend\models\GoodsCategory;
@@ -20,15 +21,36 @@ use xj\uploadify\UploadAction;
 use yii\web\Request;
 
 class GoodsController extends BackedContoller{
+    public function behaviors(){
+        return [
+            'accessFilter'=>[
+                'class'=>AccessFilter::className(),
+                'only'=>['index','add','edit','del','content']
+            ]
+        ];
+    }
     //显示列表
     public function actionIndex(){
-        $serchForm=new SerchForm();
+        //$serchForm=new SerchForm();
         $query=Goods::find();//定义数据库数据操作方法
-//        if ($keywords=\Yii::$app->request->get('keywords')){
-//
-//            $query->andWhere(['like','name',$keywords]);
-//        }
-        $serchForm->search($query);
+        if ($keywords=\Yii::$app->request->get('keywords')){
+            $cl = new \backend\components\SphinxClient();
+            $cl->SetServer ( '127.0.0.1', 9312);
+//$cl->SetServer ( '10.6.0.6', 9312);
+//$cl->SetServer ( '10.6.0.22', 9312);
+//$cl->SetServer ( '10.8.8.2', 9312);
+            $cl->SetConnectTimeout ( 10 );
+            $cl->SetArrayResult ( true );
+// $cl->SetMatchMode ( SPH_MATCH_ANY);
+            $cl->SetMatchMode ( SPH_MATCH_ALL);
+            $cl->SetLimits(0, 1000);
+            $res = $cl->Query($keywords, 'goods');//shopstore_search
+            if ($res['matches']){
+                $ids=ArrayHelper::map($res['matches'],'id','id');
+            }
+            $query->where(['in','id',$ids]);
+        }
+        //$serchForm->search($query);
         //获取分页对象
         $page=new Pagination([
             'totalCount'=>$query->count(),//总数据条数
@@ -37,7 +59,7 @@ class GoodsController extends BackedContoller{
         //获取每页所有数据
         $allGoods=$query->offset($page->offset)->limit($page->limit)->andWhere('status>0')->all();
         //调用视图显示
-        return $this->render('index',['allGoods'=>$allGoods,'page'=>$page,'serchForm'=>$serchForm]);
+        return $this->render('index',['allGoods'=>$allGoods,'page'=>$page]);
     }
     //添加商品
     public function actionAdd(){
@@ -199,5 +221,24 @@ class GoodsController extends BackedContoller{
                 'class' => 'kucha\ueditor\UEditorAction',
             ]
         ];
+    }
+
+    //测试分词搜索
+    public function actionTest(){
+        $cl = new \backend\components\SphinxClient();
+        $cl->SetServer ( '127.0.0.1', 9312);
+//$cl->SetServer ( '10.6.0.6', 9312);
+//$cl->SetServer ( '10.6.0.22', 9312);
+//$cl->SetServer ( '10.8.8.2', 9312);
+        $cl->SetConnectTimeout ( 10 );
+        $cl->SetArrayResult ( true );
+// $cl->SetMatchMode ( SPH_MATCH_ANY);
+        $cl->SetMatchMode ( SPH_MATCH_ALL);
+        $cl->SetLimits(0, 1000);
+        $info = '索尼电视';
+        $res = $cl->Query($info, 'goods');//shopstore_search
+//print_r($cl);
+        var_dump($res);
+
     }
 }

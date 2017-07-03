@@ -1,4 +1,5 @@
 <?php
+/*
 $form=\yii\bootstrap\ActiveForm::begin([
     'method'=>'get',
     'action'=>\yii\helpers\Url::to(['goods/index']),
@@ -11,11 +12,12 @@ echo $form->field($serchForm,'minprice')->textInput(['placeholder'=>'最低价�
 echo $form->field($serchForm,'maxprice')->textInput(['placeholder'=>'最高价格'])->label(false);
 echo \yii\bootstrap\Html::submitButton('搜索',['class'=>'btn btn-info form-control','style'=>'margin-bottom:10px']);
 \yii\bootstrap\ActiveForm::end();
+*/
 ?>
 
 
 <table class="table table-bordered">
-    <!-- <tr>
+     <tr>
         <td colspan="11">
             <form action="<?=\yii\helpers\Url::toRoute(['goods/index']);?>" method="get">
             <div class="input-group" style="width: 400px;margin: auto">
@@ -25,7 +27,7 @@ echo \yii\bootstrap\Html::submitButton('搜索',['class'=>'btn btn-info form-con
             </form>
         </td>
 
-    </tr>-->
+    </tr>
     <tr>
         <th>ID</th>
         <th>LOGO图片</th>

@@ -29,6 +29,7 @@ class Goods extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+
     //商品和商品分类的关系
     public function getGoodsCategory(){
         return $this->hasOne(GoodsCategory::className(),['id'=>'goods_category_id']);
@@ -52,7 +53,7 @@ class Goods extends \yii\db\ActiveRecord
             [['name','goods_category_id','brand_id','market_price','shop_price','stock','is_on_sale','status','sort'],'required'],
             [['goods_category_id', 'brand_id', 'stock', 'is_on_sale', 'status', 'sort', 'create_time'], 'integer'],
             [['market_price', 'shop_price'], 'number'],
-            [['name', 'sn'], 'string', 'max' => 20],
+            [['name', 'sn'], 'string', 'max' => 255],
             [['logo'], 'string', 'max' => 255],
 //            [['logo'], 'file', 'extensions'=>['jpg','png','gif']],
         ];

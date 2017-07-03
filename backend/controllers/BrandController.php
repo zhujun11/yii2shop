@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\filters\AccessFilter;
 use backend\models\Brand;
 use yii\data\Pagination;
 use yii\web\Request;
@@ -11,6 +12,14 @@ use crazyfd\qiniu\Qiniu;
 
 class BrandController extends BackedContoller
 {
+    public function behaviors(){
+        return [
+            'accessFilter'=>[
+                'class'=>AccessFilter::className(),
+                'only'=>['index','add','edit','del']
+            ]
+        ];
+    }
     //显示品牌列表
     public function actionIndex()
     {

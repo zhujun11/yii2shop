@@ -30,8 +30,8 @@
             <td><?=$user->username?></td>
             <td><?=\backend\models\User::$allStatus[$user->status];?></td>
             <td><?=$user->email?></td>
-            <td><?=$user->created_at?></td>
-            <td><?=date("Y-m-d H:i:s",$user->last_time)?></td>
+            <td><?=date("Y-m-d H:i:s",$user->created_at)?></td>
+            <td><?php if ($user->last_time!=0) echo date("Y-m-d H:i:s",$user->last_time)?></td>
             <td><?=$user->last_ip?></td>
             <td>
                 <?php if(Yii::$app->user->can('user/edit')){echo \yii\bootstrap\Html::a('修改',['user/edit','id'=>$user->id],['class'=>'btn btn-warning btn-xs']);}?>
