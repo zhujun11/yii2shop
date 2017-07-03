@@ -12,6 +12,7 @@ return [
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
     'language'=>'zh-CN',
+    'defaultRoute'=>'home/index',
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',
