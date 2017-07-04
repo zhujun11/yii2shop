@@ -32,6 +32,7 @@ class RegistController extends \yii\web\Controller
     }
     //用户登录
     public function actionLogin(){
+
         $model=new LoginForm();
         if($model->load(\Yii::$app->request->post()) && $model->validate()){
             if($model->loadData()){

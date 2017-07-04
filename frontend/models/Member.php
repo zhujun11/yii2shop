@@ -55,7 +55,7 @@ class Member extends \yii\db\ActiveRecord implements IdentityInterface
             ['email','email','skipOnEmpty'=>false],
             [['password_hash', 'email'], 'string', 'max' => 100],
             [['tel'], 'match','pattern'=>'/^1[34578]\d{9}$/','skipOnEmpty'=>false],
-            ['catpCode','captcha','on'=>self::SCENARIO_WEB_REGISTER,'captchaAction'=>'regist/captcha'],
+            ['catpCode','captcha','on'=>self::SCENARIO_WEB_REGISTER,'captchaAction'=>'site/captcha'],
             ['catpCode','captcha','on'=>self::SCENARIO_API_REGISTER,'captchaAction'=>'api/captcha'],
             ['catpCode','string'],
             ['smsCode','smsCode'],
